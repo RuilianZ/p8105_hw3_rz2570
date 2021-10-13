@@ -21,5 +21,37 @@ knitr::opts_chunk$set(
 ```{r}
 library(p8105.datasets)
 data("instacart")
+
+dim(instacart)
+
+names(instacart)
+
+head(instacart) 
+```
+
+* The `instacart` dataframe has `r ncol(instacart)` of columns and `r nrow(instacart)` of observations. Each row contains relative information of an item from one order , which are: `r names(instacart)`.  
+* For example, for product `49302`, its order of being added to cart was `1` by user `112108`, and it's from `dairy eggs` department.  
+
+```{r}
+instacart %>% 
+  group_by(aisle) %>% 
+  summarize(
+    n_obs = n()) %>% 
+  arrange(-n_obs) %>% 
+  nrow()
+```
+
+* There are 134 aisles, the `fresh vegetables` (`aisle_id` is 83) aisle is the most items are ordered from.
+
+```{r}
+instacart %>% 
+  group_by(aisle) %>% 
+  summarize(
+    n_obs = n()
+  ) %>% 
+  filter(n_obs > 10000) %>% 
+  ggplot(aes(x = aisle, y = n_obs)) +
+  geom_bar(stat = "identity") + 
+  theme_minimal()
 ```
 
