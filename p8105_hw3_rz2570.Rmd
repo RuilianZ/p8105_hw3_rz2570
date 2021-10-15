@@ -7,6 +7,7 @@ output: github_document
 
 ```{r}
 library(tidyverse)
+library(p8105.datasets)
 
 # Set plot options.
 
@@ -33,7 +34,6 @@ scale_fill_discrete = scale_fill_viridis_d
 ```{r}
 # Import data and do some exploration.
 
-library(p8105.datasets)
 data("instacart")
 
 dim(instacart)
@@ -96,5 +96,25 @@ mean_hour_table = instacart %>%
               values_from = mean_hour) 
 
 knitr::kable(mean_hour_table)
+```
+
+
+
+# Problem 2
+
+```{r}
+# load BRFSS data and do some cleaning
+
+data("brfss_smart2010")
+
+brfss_smart2010 = janitor::clean_names(brfss_smart2010) %>% 
+  filter(topic == "Overall Health") %>% 
+  mutate(response = factor(response)) %>% 
+  mutate(reponse = forcats::fct_relevel(response, c("Poor", "Fair", "Good", "Very good", "Excellent"))) %>% 
+  arrange(reponse)
+```
+
+```{r}
+
 ```
 
