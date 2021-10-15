@@ -183,3 +183,20 @@ brfss_ny_plot
 ```
 
 
+
+# Problem 3
+
+```{r}
+# Import and clean accel_data.csv.
+
+accel = read_csv("data/accel_data.csv") %>% 
+  janitor::clean_names()
+
+accel = 
+  mutate(accel, day = factor(day)) %>% 
+  mutate(weekday_vs_weekend = ifelse(day %in% c("Saturday", "Sunday"), "weekend", "weekday")) %>% 
+  mutate(weekday_vs_weekend = factor(weekday_vs_weekend)) %>% 
+  relocate(week, day_id, day, weekday_vs_weekend)
+```
+
+* There are `r nrow(accel)` observations and `r ncol(accel)` variables in `accel` dataset. The variable names are: `week`, `day_id`, `day`, `weekday_vs_weekend` and `activity.*`. Among them, variables `activity.*` are the activity counts for each minute of a 24-hour day starting at midnight.
