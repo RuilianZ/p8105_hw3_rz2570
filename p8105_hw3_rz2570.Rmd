@@ -111,8 +111,8 @@ brfss_smart2010 = janitor::clean_names(brfss_smart2010) %>%
   rename(state = locationabbr) %>% 
   filter(topic == "Overall Health") %>% 
   mutate(response = factor(response)) %>% 
-  mutate(reponse = forcats::fct_relevel(response, c("Poor", "Fair", "Good", "Very good", "Excellent"))) %>% 
-  arrange(reponse)
+  mutate(response = forcats::fct_relevel(response, c("Poor", "Fair", "Good", "Very good", "Excellent"))) %>% 
+  arrange(response)
 ```
 
 ```{r}
@@ -140,7 +140,7 @@ loc_num_2010 = brfss_smart2010 %>%
 # Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state.
 
 brfss_excellent = brfss_smart2010 %>% 
-  filter(reponse == "Excellent") %>% 
+  filter(response == "Excellent") %>% 
   select(year, state, locationdesc, data_value) %>% 
   drop_na() %>% 
   group_by(year, state) %>% 
@@ -148,7 +148,7 @@ brfss_excellent = brfss_smart2010 %>%
 
 # Make a “spaghetti” plot of this average value over time within a state.
 
-spaghetti_plot = ggplot(brfss_excellent, aes(x = year, y = mean_value)) +
+brfss_excellent_plot = ggplot(brfss_excellent, aes(x = year, y = mean_value)) +
   geom_line(aes(group = state, color = state)) +
   labs(
     title = "Average value over time within a state",
@@ -157,6 +157,29 @@ spaghetti_plot = ggplot(brfss_excellent, aes(x = year, y = mean_value)) +
   ) +
   theme(legend.position = "none")
 
-spaghetti_plot
+brfss_excellent_plot
 ```
+
+```{r}
+# Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State.
+
+brfss_ny = brfss_smart2010 %>% 
+  filter(year == c("2006", "2010"), state == "NY") %>% 
+  group_by(response, locationdesc) %>% 
+  separate(locationdesc, into = c("state_prefix", "location"), 5) %>% 
+  select(-state_prefix)
+
+brfss_ny_plot = ggplot(brfss_ny, aes(x = location, y = data_value)) +
+  geom_point(aes(group = response, color = response)) + 
+  coord_flip() +
+  facet_grid(. ~ year) +
+  labs(
+    title = "Distribution of value in New York state",
+    x = "Locations",
+    y = "Value"
+  )
+  
+brfss_ny_plot
+```
+
 
