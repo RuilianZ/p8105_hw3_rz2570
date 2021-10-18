@@ -200,3 +200,17 @@ accel =
 ```
 
 * There are `r nrow(accel)` observations and `r ncol(accel)` variables in `accel` dataset. The variable names are: `week`, `day_id`, `day`, `weekday_vs_weekend` and `activity.*`. Among them, variables `activity.*` are the activity counts for each minute of a 24-hour day starting at midnight.
+
+```{r}
+# Aggregate across minutes to create a total activity variable for each day, and create a table showing these totals.
+
+# accel = mutate(accel, total_activity = rowSums(accel[ ,[5:1444]]))
+
+accel_sub = accel[ , 5:1444]
+
+day_sum = rowSums(accel_sub)
+
+sum_table = as.table(day_sum)
+knitr::kable(sum_table)
+```
+
