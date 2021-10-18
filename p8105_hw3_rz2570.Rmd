@@ -214,9 +214,13 @@ accel_longer = pivot_longer(
   group_by(day_id) %>% 
   summarize(total_activity = sum(activity))
 
-ggplot(accel_longer, aes(x = day_id, y = total_activity)) +
-  geom_point() +
-  geom_line()
+knitr::kable(accel_longer)
 ```
 
-* There are no apparent trends of total activity against the days. However, we might tell from the wavy line that each "active" day are followed with one or more "inactive" days.
+* There are no apparent trends of total activity against the days. However, we might tell from the wavy line that each "active" day are followed with one or more "inactive" days.  
+
+
+```{r}
+#  Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week.
+```
+
