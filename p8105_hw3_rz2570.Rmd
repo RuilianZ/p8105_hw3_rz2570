@@ -204,13 +204,19 @@ accel =
 ```{r}
 # Aggregate across minutes to create a total activity variable for each day, and create a table showing these totals.
 
-# accel = mutate(accel, total_activity = rowSums(accel[ ,[5:1444]]))
+accel_longer = pivot_longer(
+  data = accel,
+  activity_1:activity_1440,
+  names_to =  "minute",
+  names_prefix = "activity_",
+  values_to = "activity"
+) %>% 
+  group_by(day_id) %>% 
+  summarize(total_activity = sum(activity))
 
-accel_sub = accel[ , 5:1444]
-
-day_sum = rowSums(accel_sub)
-
-sum_table = as.table(day_sum)
-knitr::kable(sum_table)
+ggplot(accel_longer, aes(x = day_id, y = total_activity)) +
+  geom_point() +
+  geom_line()
 ```
 
+* There are no apparent trends of total activity against the days. However, we might tell from the wavy line that each "active" day are followed with one or more "inactive" days.
