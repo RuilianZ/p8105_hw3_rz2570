@@ -9,12 +9,6 @@ output: github_document
 library(tidyverse)
 library(p8105.datasets)
 
-#knitr::opts_chunk$set(
-#  fig.width = 6,
-#  fig.asp = .6,
-#  out.width = "90%"
-#)
-
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
 options(
@@ -224,7 +218,8 @@ accel_summarize = accel_longer %>%
 knitr::kable(accel_summarize)
 ```
 
-* There are no apparent trends of total activity against the days. However, we might tell from the wavy line that each "active" day are followed with one or more "inactive" days.  
+* The activity in the middle of the week seems lower than other days.  
+* Most "active" days (with a higher activity count) are followed with one or more "inactive" (with a lower activity count) days.  
 
 
 ```{r}
